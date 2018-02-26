@@ -1,0 +1,91 @@
+<multistatus xmlns="DAV:">
+    <response>
+        <href>dcbox:/</href>
+        <propstat>
+            <prop>
+                <resourcetype>
+                    <collection/>
+                </resourcetype>
+                <acl xml:base="https://demo.personium.io/app-uc-directory/__role/__/" xmlns:p="urn:x-dcl:xmlns">
+                </acl>
+            </prop>
+        </propstat>
+    </response>
+    <response>
+        <href>dcbox:/Engine</href>
+        <propstat>
+            <prop>
+                <resourcetype>
+                    <collection/>
+                    <p:service xmlns:p="urn:x-personium:xmlns"/>
+                </resourcetype>
+                <acl xml:base="https://demo.personium.io/app-uc-directory/__role/__/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <exec/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                </acl>
+                <p:service language="JavaScript" xmlns:D="DAV:" xmlns:p="urn:x-personium:xmlns">
+                    <p:path name="registerDirectoryEntry" src="register_directory_entry.js"/>
+                </p:service>
+            </prop>
+        </propstat>
+    </response>
+    <response>
+        <href>dcbox:/Engine/__src</href>
+        <propstat>
+            <prop>
+                <resourcetype>
+                    <collection/>
+                </resourcetype>
+            </prop>
+        </propstat>
+    </response>
+    <response>
+        <href>dcbox:/Engine/__src/register_directory_entry.js</href>
+        <propstat>
+            <prop>
+                <getcontenttype>text/javascript</getcontenttype>
+            </prop>
+        </propstat>
+    </response>
+    <response>
+        <href>dcbox:/OData</href>
+        <propstat>
+            <prop>
+                <resourcetype>
+                    <collection/>
+                    <p:odata xmlns:p="urn:x-personium:xmlns"/>
+                </resourcetype>
+                <acl xml:base="https://demo.personium.io/app-uc-directory/__role/__/" xmlns:p="urn:x-dcl:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <read/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                    <ace>
+                        <principal>
+                            <href>DirectoryViewer</href>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <read/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                </acl>
+            </prop>
+        </propstat>
+    </response>
+</multistatus>

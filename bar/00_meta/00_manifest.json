@@ -1,0 +1,6 @@
+{
+  "bar_version": "1",
+  "box_version": "1.0",
+  "DefaultPath": "app-uc-directory",
+  "schema": "https://demo.personium.io/app-uc-directory/"
+}

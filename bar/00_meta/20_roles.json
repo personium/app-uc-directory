@@ -1,0 +1,10 @@
+{
+  "Roles": [
+    {
+      "Name": "DirectoryOwner"
+    },
+    {
+      "Name": "DirectoryViewer"
+    }
+  ]
+}
