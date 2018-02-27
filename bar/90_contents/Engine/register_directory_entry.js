@@ -65,29 +65,6 @@ function(request){
         return formatRes(dcr);
     };
 
-    // ********Get Token********
-    var urlT = [targetRootUrl, targetUnitAdminCellName, "/__token"].join("");
-    var bodyT = [
-    "grant_type=password",
-    "&username=", targetUnitAdminAccountName,
-    "&password=", targetUnitAdminAccountPassword].join("");
-    var headersT = {}
-    var contentTypeT = "application/x-www-form-urlencoded";
-
-    // エンドポイントへのPOST
-    var apiRes = dcx.sports.HTTP.post(urlT, bodyT, contentTypeT, headersT);
-
-    if (apiRes === null || apiRes.status !== 200) {
-        return {
-          status : apiRes.status,
-          headers : {"Content-Type":"application/json"},
-          body : ['{"error": {"status":' + apiRes.status + ', "message": "API call failed."}}']
-        };
-    }
-    var tokenJson = JSON.parse(apiRes.body);
-    var token = tokenJson.access_token;
-    // ************************
-
     // Get profile
     var apiRes = dcx.sports.HTTP.get(params.url+"__/profile.json", {'Accept':'application/json'});
     if (apiRes === null || apiRes.status !== 200) {
@@ -99,27 +76,22 @@ function(request){
     }
     var profileJson = JSON.parse(apiRes.body);
     var entryData = convertProfile2EntityType(params.url, profileJson);
+    var newEntryData;
 
-    // ********Create entry********
-    var urlC = directoryUrl;
-    var bodyC = JSON.stringify(entryData);
-    var headersC = {
-      "Authorization":"Bearer " + token
-    }
-    var contentTypeC = "application/json";
-    apiRes = dcx.sports.HTTP.post(urlC, bodyC, contentTypeC, headersC);
-    if (apiRes === null || apiRes.status !== 201) {
+    try {
+        newEntryData = registerDirectoryEntry(entryData);
+    } catch(ex) {
         return {
-          status : apiRes.status,
-          headers : {"Content-Type":"application/json"},
-          body : ['{"error": {"status":' + apiRes.status + ', "message": "API call failed."}}']
+            status : ex.code,
+            headers : {"Content-Type":"application/json"},
+            body : [JSON.stringify(ex)]
         };
     }
 
     return {
-         status : 200,
-         headers : {"Content-Type":"application/json"},
-         body : [apiRes.body]
+        status : 200,
+        headers : {"Content-Type":"application/json"},
+        body : [JSON.stringify(newEntryData)]
     };
 }
 
@@ -137,4 +109,15 @@ function convertProfile2EntityType(cellUrl, profileInfo){
 
     return entryData;
 
+}
+
+function registerDirectoryEntry(entryData) {
+    var authInfo = {
+        "cellUrl": "***",
+        "userId":"***",
+        "password":"***"
+    };
+    var appCell = dc.as(authInfo).cell();
+    var entity = appCell.box('app-uc-directory').odata('OData').entitySet('directory');
+    return entity.create(entryData);
 }
