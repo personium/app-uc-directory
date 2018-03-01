@@ -1,4 +1,60 @@
 function(request){
+    /*
+     * Replace the "***" with a valid App account name that have permission 
+     * to write information to the installed Box.
+     */
+    var appAccountName = '***';
+
+    /*
+     * Replace the "***" with a valid App account password that have permission 
+     * to write information to the installed Box.
+     */
+    var appAccountPassword = '***';
+
+    var appODataName = 'OData';
+    var appEntitySetName = 'directory';
+
+    var getUrlInfo = function(request) {
+        var baseUrl = request.headers['x-baseurl'];
+        var forwardedPath = request.headers['x-forwarded-path'];
+        var cellName = forwardedPath.split('/').splice(1)[0];
+        var boxName = forwardedPath.split('/').splice(1)[1];
+        var urlInfo = {
+            cellUrl: baseUrl + cellName + '/',
+            cellName: cellName,
+            boxName: boxName
+        };
+
+        return urlInfo;
+    }
+    var convertProfile2EntityType = function(cellUrl, profileInfo){
+        var entryData = {
+            cellType: profileInfo.CellType,
+            url: cellUrl,
+            alternateName: profileInfo.DisplayName,
+            description: profileInfo.Description
+        };
+        entryData.__id = entryData.url; // default is just Cell URL
+        if (entryData.locale) {
+            entryData.__id += '_' + entryData.locale;
+        }
+
+        return entryData;
+    }
+
+    var registerDirectoryEntry = function(urlInfo, entryData) {
+        var authInfo = {
+            cellUrl: urlInfo.cellUrl,
+            userId: appAccountName,
+            password: appAccountPassword
+        };
+        var appCell = _p.as(authInfo).cell();
+        var entity = appCell.box(urlInfo.boxName).odata(appODataName).entitySet(appEntitySetName);
+
+        return entity.create(entryData);
+    }
+
+    // "x-request-uri": "https://demo.personium.io/directory/app-uc-directory/Engine/registerDirectoryEntry2"
     var bodyAsString = request["input"].readAll();
     if (bodyAsString === "") {
       return {
@@ -9,35 +65,8 @@ function(request){
              })]
       };
     }
-    var params = dc.util.queryParse(bodyAsString);
-
-    /*
-    * Replace the "***" with the target Personium domain name
-    */
-    var targetDomainName = "***";
-
-    /*
-    * Replace the "***" with a valid Unit Admin cell name of the target Personium Unit.
-    */
-    var targetUnitAdminCellName = "***";
-
-    /*
-    * Replace the "***" with a valid Unit Admin account name of the target Personium Unit.
-    */
-    var targetUnitAdminAccountName = "***";
-
-    /*
-    * Replace the "***" with a valid Unit Admin account password of the target Personium Unit.
-    */
-    var targetUnitAdminAccountPassword = "***";
-
-    /* 
-    * Set up necessary URLs for this service.
-    * Current setup procedures only support creating a cell within the same Personium server.
-    */
-    var rootUrl = ["https://", targetDomainName, "/"].join("");
-    var targetRootUrl = rootUrl;
-    var directoryUrl = rootUrl + 'directory/app-uc-directory/OData/directory';
+    var params = _p.util.queryParse(bodyAsString);
+    var urlInfo = getUrlInfo(request);
 
     // Hack Ver
     var dcx = {sports: {HTTP: {}}};
@@ -53,7 +82,7 @@ function(request){
       if (!headers) {
         headers = {"Accept": "text/plain"};
       }
-      var dcr = dcx.sports.HTTP._ra.get(url, dc.util.obj2javaJson(headers), null);
+      var dcr = dcx.sports.HTTP._ra.get(url, _p.util.obj2javaJson(headers), null);
       return formatRes(dcr);
     };
     // post 
@@ -61,7 +90,7 @@ function(request){
         if (!headers) {
             headers = {"Accept": "text/plain"};
         }
-        var dcr = dcx.sports.HTTP._ra.post(url, dc.util.obj2javaJson(headers), body, contentType);
+        var dcr = dcx.sports.HTTP._ra.post(url, _p.util.obj2javaJson(headers), body, contentType);
         return formatRes(dcr);
     };
 
@@ -79,7 +108,7 @@ function(request){
     var newEntryData;
 
     try {
-        newEntryData = registerDirectoryEntry(entryData);
+        newEntryData = registerDirectoryEntry(urlInfo, entryData);
     } catch(ex) {
         return {
             status : ex.code,
@@ -93,31 +122,4 @@ function(request){
         headers : {"Content-Type":"application/json"},
         body : [JSON.stringify(newEntryData)]
     };
-}
-
-function convertProfile2EntityType(cellUrl, profileInfo){
-    var entryData = {
-        cellType: profileInfo.CellType,
-        url: cellUrl,
-        alternateName: profileInfo.DisplayName,
-        description: profileInfo.Description
-    };
-    entryData.__id = entryData.url; // default is just Cell URL
-    if (entryData.locale) {
-        entryData.__id += '_' + entryData.locale;
-    }
-
-    return entryData;
-
-}
-
-function registerDirectoryEntry(entryData) {
-    var authInfo = {
-        "cellUrl": "***",
-        "userId":"***",
-        "password":"***"
-    };
-    var appCell = dc.as(authInfo).cell();
-    var entity = appCell.box('app-uc-directory').odata('OData').entitySet('directory');
-    return entity.create(entryData);
 }
