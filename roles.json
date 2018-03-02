@@ -1,1 +1,10 @@
-{}
+{
+    "DirectoryOwner": {
+        "DisplayName": "Directory Owner",
+        "Discription": "Has both read/write permission."
+    },
+    "DirectoryViewer": {
+        "DisplayName": "Directory Viewer",
+        "Discription": "Only have permission to view the directory."
+    }
+}
