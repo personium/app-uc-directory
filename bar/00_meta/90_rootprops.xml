@@ -76,6 +76,19 @@
                     </ace>
                     <ace>
                         <principal>
+                            <href>DirectoryOwner</href>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <write/>
+                            </privilege>
+                            <privilege>
+                                <read/>
+                            </privilege>
+                        </grant>
+                    </ace>
+                    <ace>
+                        <principal>
                             <href>DirectoryViewer</href>
                         </principal>
                         <grant>
