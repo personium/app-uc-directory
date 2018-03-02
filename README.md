@@ -15,3 +15,19 @@
          * to write information to the installed Box.
          */
         var appAccountPassword = '***';
+
+# How to use it  
+Send a RESTful API to register an entry to the directory (OData).
+You just need to specify an existing Cell URL and the engine service will look up the Cell's profile and register the following properties to the directory.  
+
+- Cell type (cellType)  
+- Displayed name ([alternateName](http://schema.org/alternateName))  
+- Description ([description](http://schema.org/description))  
+
+By default, anyone can register to and read from the directory. However, you can modify the ACL of the engine service to limit user's access.  
+
+## Restlet Client Example  
+1. Install Restlet Client to Chrome.  
+1. Import the [Restlet Client scenario](resources/RestletClientScenarios/demo-directory-API.json).  
+1. Modify variables according to your environment.  
+1. Register an existing Cell URL.  
