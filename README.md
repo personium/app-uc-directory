@@ -1,5 +1,5 @@
 # How to deploy  
-Watch the [demo on youTube](https://www.youtube.com/watch?v=gw7z0rV8ZDo&feature=youtu.be).  
+Watch the [demo (don't forget to turn on the caption) on youTube](https://www.youtube.com/watch?v=gw7z0rV8ZDo&feature=youtu.be).  
 1. Log on to the target App Cell from Cell Manager.  
 1. Install the BAR file (app-uc-directory.bar) to the target App Cell.  
 1. Create an App account and assign DirectoryOwner role to it.  
