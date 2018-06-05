@@ -67,43 +67,25 @@ function(request){
     }
     var params = _p.util.queryParse(bodyAsString);
     var urlInfo = getUrlInfo(request);
-
-    // Hack Ver
-    var dcx = {sports: {HTTP: {}}};
-    var __a = new Packages.io.personium.client.PersoniumContext(pjvm.getBaseUrl(), pjvm.getCellName(), pjvm.getBoxSchema(), pjvm.getBoxName()).withToken(null);
-    dcx.sports.HTTP._ra = Packages.io.personium.client.http.RestAdapterFactory.create(__a);
-    var formatRes = function(dcr) {
-        var resp = {body: "" + dcr.bodyAsString(), status: dcr.getStatusCode(), headers: {}};
-        return resp;
-    }
-
-    // get
-    dcx.sports.HTTP.get = function(url, headers) {
-      if (!headers) {
-        headers = {"Accept": "text/plain"};
-      }
-      var dcr = dcx.sports.HTTP._ra.get(url, _p.util.obj2javaJson(headers), null);
-      return formatRes(dcr);
-    };
-    // post 
-    dcx.sports.HTTP.post = function(url, body, contentType, headers) {
-        if (!headers) {
-            headers = {"Accept": "text/plain"};
-        }
-        var dcr = dcx.sports.HTTP._ra.post(url, _p.util.obj2javaJson(headers), body, contentType);
-        return formatRes(dcr);
-    };
+    var httpClient = new _p.extension.HttpClient();
+    var httpCode, response;
 
     // Get profile
-    var apiRes = dcx.sports.HTTP.get(params.url+"__/profile.json", {'Accept':'application/json'});
-    if (apiRes === null || apiRes.status !== 200) {
-        return {
-            status : apiRes.status,
-            headers : {"Content-Type":"application/json"},
-            body : ['{"error": {"status":' + apiRes.status + ', "message": "API call failed."}}']
-        };
+    try {
+        var url = params.url+"__/profile.json";
+        var headers = {'Accept':'application/json'};
+        response = httpClient.get(url, headers);
+    } catch (e) {
+        // System exception
+        return createResponse(500, e);
     }
-    var profileJson = JSON.parse(apiRes.body);
+    httpCode = parseInt(response.status);
+    // Get API usually returns HTTP code 200
+    if (httpCode !== 200) {
+        // Personium exception
+        return createResponse(httpCode, response.body);
+    }
+    var profileJson = JSON.parse(response.body);
     var entryData = convertProfile2EntityType(params.url, profileJson);
     var newEntryData;
 
@@ -123,3 +105,13 @@ function(request){
         body : [JSON.stringify(newEntryData)]
     };
 }
+
+function createResponse(tempCode, tempBody) {
+    var isString = typeof tempBody == "string";
+    var tempHeaders = isString ? {"Content-Type":"text/plain"} : {"Content-Type":"application/json"};
+    return {
+        status: tempCode,
+        headers: tempHeaders,
+        body: [isString ? tempBody : JSON.stringify(tempBody)]
+    };
+};
