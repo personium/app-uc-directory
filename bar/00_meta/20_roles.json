@@ -1,10 +1,1 @@
-{
-  "Roles": [
-    {
-      "Name": "DirectoryOwner"
-    },
-    {
-      "Name": "DirectoryViewer"
-    }
-  ]
-}
+{"Roles":[{"Name":"DirectoryOwner"},{"Name":"DirectoryViewer"}]}
