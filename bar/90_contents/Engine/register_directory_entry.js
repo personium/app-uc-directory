@@ -1,5 +1,10 @@
 function(request){
     /*
+     * Replace the "***" with your App Cell URL.
+     * Example: "https://directory.demo.personium.io/"
+     */
+    var appCellUrl = '***';
+    /*
      * Replace the "***" with a valid App account name that have permission 
      * to write information to the installed Box.
      */
@@ -14,19 +19,6 @@ function(request){
     var appODataName = 'OData';
     var appEntitySetName = 'directory';
 
-    var getUrlInfo = function(request) {
-        var baseUrl = request.headers['x-baseurl'];
-        var forwardedPath = request.headers['x-forwarded-path'];
-        var cellName = forwardedPath.split('/').splice(1)[0];
-        var boxName = forwardedPath.split('/').splice(1)[1];
-        var urlInfo = {
-            cellUrl: baseUrl + cellName + '/',
-            cellName: cellName,
-            boxName: boxName
-        };
-
-        return urlInfo;
-    }
     var convertProfile2EntityType = function(cellUrl, profileInfo){
         var entryData = {
             cellType: profileInfo.CellType,
@@ -42,19 +34,17 @@ function(request){
         return entryData;
     }
 
-    var registerDirectoryEntry = function(urlInfo, entryData) {
-        var authInfo = {
-            cellUrl: urlInfo.cellUrl,
+    var registerDirectoryEntry = function(entryData) {
+        var APP_CELL_ADMIN_INFO = {
+            cellUrl: appCellUrl,
             userId: appAccountName,
-            password: appAccountPassword
+            password: appAccountPassword 
         };
-        var appCell = _p.as(authInfo).cell();
-        var entity = appCell.box(urlInfo.boxName).odata(appODataName).entitySet(appEntitySetName);
+        var entity = _p.as(APP_CELL_ADMIN_INFO).cell().box("app-uc-directory").odata(appODataName).entitySet(appEntitySetName);
 
         return entity.create(entryData);
     }
 
-    // "x-request-uri": "https://demo.personium.io/directory/app-uc-directory/Engine/registerDirectoryEntry2"
     var bodyAsString = request["input"].readAll();
     if (bodyAsString === "") {
       return {
@@ -66,7 +56,6 @@ function(request){
       };
     }
     var params = _p.util.queryParse(bodyAsString);
-    var urlInfo = getUrlInfo(request);
     var httpClient = new _p.extension.HttpClient();
     var httpCode, response;
 
@@ -90,7 +79,7 @@ function(request){
     var newEntryData;
 
     try {
-        newEntryData = registerDirectoryEntry(urlInfo, entryData);
+        newEntryData = registerDirectoryEntry(entryData);
     } catch(ex) {
         return {
             status : ex.code,
