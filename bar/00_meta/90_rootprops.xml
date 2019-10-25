@@ -3,12 +3,12 @@
         <href>personium-localbox:/</href>
         <propstat>
             <prop>
-                <creationdate>2018-02-25T10:37:32.795+0000</creationdate>
-                <getlastmodified>Sun, 25 Feb 2018 10:37:32 GMT</getlastmodified>
+                <creationdate>2019-04-22T08:15:27.690+0000</creationdate>
+                <getlastmodified>Mon, 22 Apr 2019 08:15:27 GMT</getlastmodified>
                 <resourcetype>
                     <collection/>
                 </resourcetype>
-                <acl xml:base="https://directory.demo.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns"/>
+                <acl xml:base="https://directory.demo-eu.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns"/>
             </prop>
             <status>HTTP/1.1 200 OK</status>
         </propstat>
@@ -17,26 +17,16 @@
         <href>personium-localbox:/OData</href>
         <propstat>
             <prop>
-                <creationdate>2018-02-25T10:37:32.971+0000</creationdate>
-                <getlastmodified>Sun, 25 Feb 2018 10:37:32 GMT</getlastmodified>
+                <creationdate>2019-04-22T08:18:52.406+0000</creationdate>
+                <getlastmodified>Mon, 22 Apr 2019 08:18:52 GMT</getlastmodified>
                 <resourcetype>
                     <collection/>
                     <p:odata xmlns:p="urn:x-personium:xmlns"/>
                 </resourcetype>
-                <acl xml:base="https://directory.demo.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
+                <acl xml:base="https://directory.demo-eu.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
                     <ace>
                         <principal>
                             <all/>
-                        </principal>
-                        <grant>
-                            <privilege>
-                                <D:read xmlns:D="DAV:"/>
-                            </privilege>
-                        </grant>
-                    </ace>
-                    <ace>
-                        <principal>
-                            <href>DirectoryViewer</href>
                         </principal>
                         <grant>
                             <privilege>
@@ -57,6 +47,16 @@
                             </privilege>
                         </grant>
                     </ace>
+                    <ace>
+                        <principal>
+                            <href>DirectoryViewer</href>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <D:read xmlns:D="DAV:"/>
+                            </privilege>
+                        </grant>
+                    </ace>
                 </acl>
             </prop>
             <status>HTTP/1.1 200 OK</status>
@@ -66,13 +66,13 @@
         <href>personium-localbox:/Engine</href>
         <propstat>
             <prop>
-                <creationdate>2018-02-25T10:37:32.964+0000</creationdate>
-                <getlastmodified>Thu, 01 Mar 2018 05:49:57 GMT</getlastmodified>
+                <creationdate>2019-04-22T08:15:40.716+0000</creationdate>
+                <getlastmodified>Mon, 22 Apr 2019 08:16:33 GMT</getlastmodified>
                 <resourcetype>
                     <collection/>
                     <p:service xmlns:p="urn:x-personium:xmlns"/>
                 </resourcetype>
-                <acl p:requireSchemaAuthz="none" xml:base="https://directory.demo.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
+                <acl p:requireSchemaAuthz="none" xml:base="https://directory.demo-eu.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
                     <ace>
                         <principal>
                             <all/>
@@ -84,7 +84,7 @@
                         </grant>
                     </ace>
                 </acl>
-                <p:service language="JavaScript" subject="engine" xmlns:p="urn:x-personium:xmlns" xmlns:D="DAV:" xmlns:Z="http://www.w3.com/standards/z39.50/">
+                <p:service language="JavaScript" subject="" xmlns:p="urn:x-personium:xmlns" xmlns:D="DAV:" xmlns:Z="http://www.w3.com/standards/z39.50/">
                     <p:path name="registerDirectoryEntry" src="register_directory_entry.js"/>
                 </p:service>
             </prop>
@@ -95,12 +95,54 @@
         <href>personium-localbox:/Engine/__src</href>
         <propstat>
             <prop>
-                <creationdate>2018-02-25T10:37:32.969+0000</creationdate>
-                <getlastmodified>Sun, 25 Feb 2018 10:37:32 GMT</getlastmodified>
+                <creationdate>2019-04-22T08:15:40.723+0000</creationdate>
+                <getlastmodified>Mon, 22 Apr 2019 08:15:40 GMT</getlastmodified>
                 <resourcetype>
                     <collection/>
                 </resourcetype>
-                <acl xml:base="https://directory.demo.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns"/>
+                <acl xml:base="https://directory.demo-eu.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <exec xmlns="" xmlns:ns3="DAV:"/>
+                            </privilege>
+                        </grant>
+                        <inherited>
+                            <href>https://directory.demo-eu.personium.io/app-uc-directory/Engine</href>
+                        </inherited>
+                    </ace>
+                </acl>
+            </prop>
+            <status>HTTP/1.1 200 OK</status>
+        </propstat>
+    </response>
+    <response>
+        <href>personium-localbox:/Engine/__src/underscore.js</href>
+        <propstat>
+            <prop>
+                <creationdate>2019-10-24T06:50:49.633+0000</creationdate>
+                <getcontentlength>57863</getcontentlength>
+                <getcontenttype>text/javascript</getcontenttype>
+                <getlastmodified>Thu, 24 Oct 2019 06:50:49 GMT</getlastmodified>
+                <resourcetype/>
+                <acl xml:base="https://directory.demo-eu.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <exec xmlns="" xmlns:ns3="DAV:"/>
+                            </privilege>
+                        </grant>
+                        <inherited>
+                            <href>https://directory.demo-eu.personium.io/app-uc-directory/Engine</href>
+                        </inherited>
+                    </ace>
+                </acl>
             </prop>
             <status>HTTP/1.1 200 OK</status>
         </propstat>
@@ -109,12 +151,54 @@
         <href>personium-localbox:/Engine/__src/register_directory_entry.js</href>
         <propstat>
             <prop>
-                <creationdate>2018-02-25T10:37:33.058+0000</creationdate>
-                <getcontentlength>3252</getcontentlength>
+                <creationdate>2019-04-22T08:16:03.266+0000</creationdate>
+                <getcontentlength>3576</getcontentlength>
                 <getcontenttype>text/javascript</getcontenttype>
-                <getlastmodified>Fri, 01 Mar 2019 00:57:57 GMT</getlastmodified>
+                <getlastmodified>Fri, 25 Oct 2019 08:14:25 GMT</getlastmodified>
                 <resourcetype/>
-                <acl xml:base="https://directory.demo.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns"/>
+                <acl xml:base="https://directory.demo-eu.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <exec xmlns="" xmlns:ns3="DAV:"/>
+                            </privilege>
+                        </grant>
+                        <inherited>
+                            <href>https://directory.demo-eu.personium.io/app-uc-directory/Engine</href>
+                        </inherited>
+                    </ace>
+                </acl>
+            </prop>
+            <status>HTTP/1.1 200 OK</status>
+        </propstat>
+    </response>
+    <response>
+        <href>personium-localbox:/Engine/__src/personium.js</href>
+        <propstat>
+            <prop>
+                <creationdate>2019-10-24T06:44:17.272+0000</creationdate>
+                <getcontentlength>9094</getcontentlength>
+                <getcontenttype>text/javascript</getcontenttype>
+                <getlastmodified>Thu, 24 Oct 2019 06:57:40 GMT</getlastmodified>
+                <resourcetype/>
+                <acl xml:base="https://directory.demo-eu.personium.io/__role/app-uc-directory/" xmlns:p="urn:x-personium:xmlns">
+                    <ace>
+                        <principal>
+                            <all/>
+                        </principal>
+                        <grant>
+                            <privilege>
+                                <exec xmlns="" xmlns:ns3="DAV:"/>
+                            </privilege>
+                        </grant>
+                        <inherited>
+                            <href>https://directory.demo-eu.personium.io/app-uc-directory/Engine</href>
+                        </inherited>
+                    </ace>
+                </acl>
             </prop>
             <status>HTTP/1.1 200 OK</status>
         </propstat>

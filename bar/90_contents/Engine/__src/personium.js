@@ -1,10 +1,8 @@
-exports.personium = (function() {
+exports.personium = (function(_, accInfo) {
     var personium = personium || {};
     var _allowedKeys = [];
     var _requiredKeys = [];
     
-    var _ = require("underscore")._;
-    var accInfo = require("acc_info").accInfo;
     var _appCellAdminInfo = accInfo.APP_CELL_ADMIN_INFO;
     var _refererList = [accInfo.APP_CELL_URL];
 
@@ -34,9 +32,9 @@ exports.personium = (function() {
             "__token"
         ].join("");
         var headers = {
-            "Accept": "application/json",
+            "Accept": "application/json"
         };
-        var contentType = "text/plain";
+        var contentType = "application/x-www-form-urlencoded";
         var body = [
             "grant_type=authorization_code",
             "code=" + query.code,
@@ -204,8 +202,15 @@ exports.personium = (function() {
 
     personium.httpPOSTMethod = function (url, headers, contentType, body, httpCodeExpected) {
         var httpClient = new _p.extension.HttpClient();
-        var response = httpClient.post(url, headers, contentType, body);
-        var httpCode = parseInt(response.status);
+        var response = null;
+        var httpCode;
+        try {
+            response = httpClient.post(url, headers, contentType, body);
+            httpCode = parseInt(response.status);
+        } catch(e) {
+            // Sometimes SSL certificate issue raises exception
+            httpCode = 500;
+        }
         if (httpCode === 500) {
             // retry
             var ignoreVerification = {"IgnoreHostnameVerification": true};
@@ -237,12 +242,12 @@ exports.personium = (function() {
             return personium.createResponse(500, e);
         }
 
-        var tempErrorMessage;
+        var tempErrorMessage = e.message;
         try {
             // Convert to JSON so that response header can be properly configured ("Content-Type":"application/json").
             tempErrorMessage = JSON.parse(e.message);
         } catch(e) {
-            tempErrorMessage = e.message;
+            tempErrorMessage = "Fail to parse JSON. " + tempErrorMessage;
         }
         if (_.isUndefined(tempErrorCode) || _.isNull(tempErrorCode) || tempErrorCode == 0) {
             return personium.createResponse(500, tempErrorMessage);
@@ -262,4 +267,4 @@ exports.personium = (function() {
     };
     
     return personium;
-}());
+}(_, accInfo));
