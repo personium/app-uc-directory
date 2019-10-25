@@ -1,9 +1,11 @@
 # How to deploy  
 Watch the [demo (don't forget to turn on the caption) on youTube](https://www.youtube.com/watch?v=gw7z0rV8ZDo&feature=youtu.be).  
-1. Log on to the target App Cell from Cell Manager.  
+
+1. Log on to the target App Cell (e.g. directory) from Cell Manager.  
 1. Install the BAR file (app-uc-directory.bar) to the target App Cell.  
+1. Set the box's schema URL correctly.  
 1. Create an App account and assign DirectoryOwner role to it.  
-1. Download and reflect the account information to register_directory_entry.js  
+1. Download the file (register_directory_entry.js) and reflect the account information.   
 
         /*
          * Replace the "***" with a valid App account name that have permission 
@@ -29,6 +31,6 @@ By default, anyone can register to and read from the directory. However, you can
 
 ## Restlet Client Example  
 1. Install Restlet Client to Chrome.  
-1. Import the [Restlet Client scenario](resources/RestletClientScenarios/demo-directory-API.json).  
+1. Import the [Restlet Client scenario](resources/RestletClientScenarios/directory.json).  
 1. Modify variables according to your environment.  
 1. Register an existing Cell URL.  
