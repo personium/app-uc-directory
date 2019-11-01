@@ -77,20 +77,6 @@ function(request){
 }
 
 /*
- * To be removed when newer personium-engine is released BEGIN
- */
-_p.Box = function(obj) {
-    this.core = obj;
-    this.name = obj.getName();
-    this.schema = obj.getSchema();
-    this.ctl = new _p.BoxCtl(obj);
-};
-_p.Box.prototype = new _p.Webdav();
-/*
- * To be removed when newer personium-engine is released END
- */
-
-/*
  * Replace the "***" with a valid App account name that have permission 
  * to write information to the installed Box.
  */
