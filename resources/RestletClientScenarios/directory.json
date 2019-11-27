@@ -1,0 +1,207 @@
+{
+    "version": 5,
+    "entities": [
+        {
+            "entity": {
+                "type": "Project",
+                "id": "733779a9-290c-4993-a629-e1a6a784b868",
+                "lastModified": "2019-10-07T17:18:43.419+09:00",
+                "name": "Demo EU"
+            },
+            "children": [
+                {
+                    "entity": {
+                        "type": "Service",
+                        "id": "d58992fe-1c50-4c5d-a068-6dab112ff38d",
+                        "name": "02 Directory service",
+                        "parentId": "733779a9-290c-4993-a629-e1a6a784b868"
+                    },
+                    "children": [
+                        {
+                            "entity": {
+                                "uriEditor": true,
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "type": "Text",
+                                                "name": "grant_type",
+                                                "value": "password"
+                                            },
+                                            {
+                                                "enabled": true,
+                                                "type": "Text",
+                                                "name": "username",
+                                                "value": "${\"Directory ID\"}"
+                                            },
+                                            {
+                                                "enabled": true,
+                                                "type": "Text",
+                                                "name": "password",
+                                                "value": "${\"Directory Password\"}"
+                                            },
+                                            {
+                                                "enabled": true,
+                                                "type": "Text",
+                                                "name": "p_cookie",
+                                                "value": "true"
+                                            }
+                                        ]
+                                    },
+                                    "bodyType": "Form",
+                                    "autoSetLength": true,
+                                    "textBodyEditorHeight": 209,
+                                    "textBody": ""
+                                },
+                                "headersType": "Form",
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "secure": true,
+                                        "name": "https",
+                                        "version": "V11"
+                                    },
+                                    "host": "${\"Cell URL Directory\"}__token",
+                                    "path": ""
+                                },
+                                "description": "Authenticate yourself to Personium Cell. Similar to logging in to HomeApp.",
+                                "id": "9ac09d33-1286-4805-89e5-a2f7b5f48032",
+                                "name": "01 Get Directory Owner Token",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/x-www-form-urlencoded"
+                                    }
+                                ],
+                                "assertions": [
+                                    {
+                                        "comparison": "Equals",
+                                        "subject": "ResponseStatus",
+                                        "path": "code",
+                                        "value": "200"
+                                    }
+                                ],
+                                "parentId": "d58992fe-1c50-4c5d-a068-6dab112ff38d"
+                            }
+                        },
+                        {
+                            "entity": {
+                                "type": "Request",
+                                "method": {
+                                    "requestBody": true,
+                                    "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+                                    "name": "POST"
+                                },
+                                "body": {
+                                    "formBody": {
+                                        "overrideContentType": true,
+                                        "encoding": "application/x-www-form-urlencoded",
+                                        "items": [
+                                            {
+                                                "enabled": true,
+                                                "type": "Text",
+                                                "name": "url",
+                                                "value": "https://dixonsiu.demo-eu.personium.io/"
+                                            },
+                                            {
+                                                "type": "Text",
+                                                "name": "locale",
+                                                "value": "en"
+                                            }
+                                        ]
+                                    },
+                                    "bodyType": "Form",
+                                    "autoSetLength": true,
+                                    "textBody": ""
+                                },
+                                "headersType": "Form",
+                                "uri": {
+                                    "query": {
+                                        "delimiter": "&",
+                                        "items": []
+                                    },
+                                    "scheme": {
+                                        "secure": true,
+                                        "name": "https",
+                                        "version": "V11"
+                                    },
+                                    "host": "${\"Cell URL Directory\"}app-uc-directory",
+                                    "path": "/Engine/registerDirectoryEntry"
+                                },
+                                "description": "Authenticate yourself to the App.",
+                                "id": "95c8bd49-da98-42fe-b9d1-c0ef3738876a",
+                                "name": "02 Register to directory",
+                                "headers": [
+                                    {
+                                        "enabled": true,
+                                        "name": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "enabled": true,
+                                        "name": "Content-Type",
+                                        "value": "application/x-www-form-urlencoded"
+                                    },
+                                    {
+                                        "enabled": true,
+                                        "name": "Authorization",
+                                        "value": "Bearer ${getEntityById(\"9ac09d33-1286-4805-89e5-a2f7b5f48032\").\"response\".\"body\".\"access_token\"}"
+                                    }
+                                ],
+                                "parentId": "d58992fe-1c50-4c5d-a068-6dab112ff38d"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "environments": [
+        {
+            "id": "4ad3e82c-cc1a-4145-baf1-1bbd89818e1a",
+            "name": "directory",
+            "variables": {
+                "7bc673ef-a7d9-4253-b754-1f0a4975ec20": {
+                    "createdAt": "2019-10-25T15:48:13.646+09:00",
+                    "name": "Cell URL Directory",
+                    "value": "https://directory.demo-eu.personium.io/",
+                    "enabled": true,
+                    "private": false
+                },
+                "06ae3ab5-a01f-447f-9600-865273a6e91d": {
+                    "createdAt": "2019-10-25T15:48:42.950+09:00",
+                    "name": "Directory ID",
+                    "value": "***",
+                    "enabled": true,
+                    "private": false
+                },
+                "184e5d98-9ce1-4242-9602-021492d4c8f7": {
+                    "createdAt": "2019-10-25T15:49:07.339+09:00",
+                    "name": "Directory Password",
+                    "value": "***",
+                    "enabled": true,
+                    "private": false
+                }
+            }
+        }
+    ],
+    "front-version": "23.0.2"
+}
